@@ -1,5 +1,7 @@
+import { useUploadThing } from "@/lib/uploadthing";
 import UploadFormInput from "./UploadFormInput";
 import { z } from "zod";
+import { toast } from "sonner";
 
 const schema = z.object({
   file: z
@@ -14,7 +16,19 @@ const schema = z.object({
 });
 
 const UploadForm = () => {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const { startUpload, routeConfig } = useUploadThing("pdfUploader", {
+    onClientUploadComplete: () => {
+      toast.success("File Uploaded Successfully!");
+    },
+    onUploadError: () => {
+      toast.error("Error occured while uploading!");
+    },
+    onUploadBegin: ({ file }) => {
+      console.log("Upload has begun for", file);
+    },
+  });
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     console.log("submitted");
@@ -33,6 +47,10 @@ const UploadForm = () => {
 
       return;
     }
+
+    const res = await startUpload({ file });
+
+    if (!res) return;
 
     // schema with zod
   };
