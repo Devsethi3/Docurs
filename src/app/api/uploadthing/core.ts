@@ -24,5 +24,3 @@ export const OurFileRouter = {
 } satisfies FileRouter;
 
 export type OurFileRouter = typeof OurFileRouter;
-
-// fix all the errors and optimize the code for uploading the file, after that also provide the git commit message 
