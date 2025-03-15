@@ -4,23 +4,30 @@ import { createUploadthing, type FileRouter } from "uploadthing/next";
 
 const f = createUploadthing();
 
-export const OurFileRouter = {
-  pdfUploader: f({ pdf: { maxFileSize: "32MB" } })
-    .middleware(async ({ req }) => {
-      // get user info
-
+// Define file upload handlers
+export const ourFileRouter = {
+  // Route for PDF uploads with a 16MB limit
+  pdfUploader: f({ pdf: { maxFileSize: "16MB" } })
+    .middleware(async () => {
+      // Verify user authentication
       const user = await currentUser();
+      if (!user) throw new UploadThingError("Unauthorized - Please sign in");
 
-      if (!user) throw new UploadThingError("Unauthorized");
-
-      return { userId: user.id };
+      // Return user metadata to be available in onUploadComplete
+      return {
+        userId: user.id,
+      };
     })
     .onUploadComplete(async ({ metadata, file }) => {
-      console.log("upload completed for user id", metadata.userId);
-      console.log("file url", file.url);
-
-      return { userId: metadata.userId, file };
+      // Return the expected format that matches what generatePdfSummary expects
+      return {
+        userId: metadata.userId,
+        file: {
+          url: file.url,
+          name: file.name,
+        },
+      };
     }),
 } satisfies FileRouter;
 
-export type OurFileRouter = typeof OurFileRouter;
+export type OurFileRouter = typeof ourFileRouter;

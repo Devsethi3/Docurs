@@ -1,8 +1,17 @@
 @import "tailwindcss";
 
+@import "uploadthing/tw/v4";
+@source "../node_modules/@uploadthing/react/dist";
+
 @plugin "tailwindcss-animate";
 
 @custom-variant dark (&:is(.dark *));
+
+.container {
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: 0.75rem;
+}
 
 @theme inline {
   --color-background: var(--background);

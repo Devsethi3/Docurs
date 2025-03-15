@@ -131,13 +131,13 @@ const Navbar = () => {
           {user ? (
             <>
               <UserButton
-              // appearance={{
-              //   elements: {
-              //     userButtonAvatarBox: "w-14 h-14",
-              //     userButtonPopoverFooter: "hidden",
-              //   },
-              // }}
-              // afterSignOutUrl="/"
+              appearance={{
+                elements: {
+                  // userButtonAvatarBox: "w-14 h-14",
+                  userButtonPopoverFooter: "hidden",
+                },
+              }}
+              afterSignOutUrl="/"
               />
             </>
           ) : (
