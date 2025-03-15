@@ -1,5 +1,6 @@
 "use server";
 
+import { generateSummaryFromGemini } from "@/lib/gemini";
 import { fetchAndExtractPdfText } from "@/lib/langchain";
 
 export async function generatePdfSummary(uploadResponse: {
@@ -63,7 +64,7 @@ export async function generatePdfSummary(uploadResponse: {
     console.error("Error extracting PDF text:", error);
     return {
       success: false,
-      message: "PDF extraction failed!",
+      message: "PDF processing failed!",
       data: null,
     };
   }
