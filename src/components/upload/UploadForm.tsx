@@ -44,7 +44,7 @@ const UploadForm = () => {
           },
         };
 
-        // Process the PDF using your 
+        // Process the PDF using  
         const summaryResult = await generatePdfSummary(uploadResult);
         console.log(summaryResult);
 
