@@ -46,6 +46,7 @@ const UploadForm = () => {
 
         // Process the PDF using your server action
         const summaryResult = await generatePdfSummary(uploadResult);
+        console.log(summaryResult);
 
         const { data = null, message = null } = summaryResult || {};
 
@@ -122,4 +123,3 @@ const UploadForm = () => {
 };
 
 export default UploadForm;
-
