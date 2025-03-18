@@ -1,4 +1,4 @@
-// components/custom-upload
+// components/custom
 "use client";
 
 import { useCallback, useState } from "react";
