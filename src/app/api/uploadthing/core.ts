@@ -19,14 +19,10 @@ export const ourFileRouter = {
       };
     })
     .onUploadComplete(async ({ metadata, file }) => {
-      // Return the expected format that matches what generatePdfSummary expects
-      return {
-        userId: metadata.userId,
-        file: {
-          url: file.url,
-          name: file.name,
-        },
-      };
+      console.log("Upload completed for user id", metadata.userId);
+      console.log("file url", file.ufsUrl);
+      
+      return { userId: metadata.userId, file };
     }),
 } satisfies FileRouter;
 

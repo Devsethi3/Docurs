@@ -129,7 +129,7 @@ const UploadFormInput = forwardRef<HTMLFormElement, UploadFormInputProps>(
               onDragLeave={handleDragLeave}
               onDrop={handleDrop}
               className={cn(
-                "border-2 border-dashed rounded-lg p-8 cursor-pointer text-center transition-colors",
+                "border-2 border-dashed  rounded-lg p-8 cursor-pointer text-center transition-colors",
                 isDragging
                   ? "border-blue-500 bg-blue-50"
                   : "border-gray-300 hover:border-blue-400"

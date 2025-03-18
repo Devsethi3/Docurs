@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { Questrial } from "next/font/google";
+import { Bricolage_Grotesque } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import Navbar from "@/components/Navbar";
 
-const font = Questrial({ weight: ["400"] });
+const font = Bricolage_Grotesque({ weight: ["400"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",

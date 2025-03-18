@@ -1,4 +1,3 @@
-// /@lib/langchain.ts 
 import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
 
 export async function fetchAndExtractPdfText(fileUrl: string) {

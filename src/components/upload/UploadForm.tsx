@@ -5,7 +5,13 @@ import { useUploadThing } from "@/lib/uploadthing";
 import UploadFormInput from "./UploadFormInput";
 import { z } from "zod";
 import { toast } from "sonner";
-import { generatePdfSummary } from "@/actions/upload-actions";
+import {
+  generatePdfSummary,
+  storePdfSummaryAction,
+} from "@/actions/upload-actions";
+import { formatFileNameAsTitle } from "@/lib/utils";
+import { SummaryResponse, UploadResponse } from "@/types/upload";
+import { useRouter } from "next/navigation";
 
 const pdfSchema = z.object({
   file: z
@@ -17,60 +23,22 @@ const pdfSchema = z.object({
 });
 
 const UploadForm = () => {
+  const router = useRouter();
   const [isUploading, setIsUploading] = useState(false);
-  const [extractedText, setExtractedText] = useState<string | null>(null);
-
   const formRef = useRef<HTMLFormElement>(null);
+  const [summaryResult, setSummaryResult] = useState<string | null>(null);
 
   const { startUpload } = useUploadThing("pdfUploader", {
-    onClientUploadComplete: async (res) => {
-      if (!res || res.length === 0) {
-        toast.error("Upload failed - no response received");
-        setIsUploading(false);
-        return;
-      }
-
-      toast.success("File uploaded successfully!");
-
-      try {
-        // The response from UploadThing matches what generatePdfSummary expects
-        const uploadResult = {
-          serverData: {
-            userId: res[0].serverData.userId,
-            file: {
-              url: res[0].url,
-              name: res[0].name,
-            },
-          },
-        };
-
-        // Process the PDF using  
-        const summaryResult = await generatePdfSummary(uploadResult);
-        console.log(summaryResult);
-
-        const { data = null, message = null } = summaryResult || {};
-
-        if (summaryResult.success) {
-          toast.success(summaryResult.message);
-          setExtractedText(summaryResult.data);
-          formRef.current?.reset();
-        } else {
-          toast.error(summaryResult.message);
-        }
-      } catch (error) {
-        console.error("Error processing PDF:", error);
-        toast.error("Error processing your PDF");
-      } finally {
-        setIsUploading(false);
-      }
+    onClientUploadComplete: () => {
+      // We'll handle success in the promise chain instead
+      setIsUploading(false);
     },
     onUploadError: (error) => {
-      console.error("Upload error:", error);
-      toast.error("Error uploading file: " + error.message);
+      toast.error(`❌ Upload Failed: ${error.message}`);
       setIsUploading(false);
     },
     onUploadBegin: (file) => {
-      toast.info(`Uploading ${file}...`);
+      toast.info(`🔄 Uploading ${file}...`);
     },
   });
 
@@ -81,23 +49,130 @@ const UploadForm = () => {
     const formData = new FormData(e.currentTarget);
     const file = formData.get("file") as File;
 
-    // Validate the file
-    const validation = pdfSchema.safeParse({ file });
+    const validatedFields = pdfSchema.safeParse({ file });
 
-    if (!validation.success) {
-      const errorMessage =
-        validation.error.flatten().fieldErrors.file?.[0] ?? "Invalid file";
-      toast.error(errorMessage);
+    if (!validatedFields.success) {
+      toast.error(
+        `❌ ${
+          validatedFields.error.flatten().fieldErrors.file?.[0] ??
+          "Invalid File"
+        }`
+      );
       setIsUploading(false);
       return;
     }
 
-    // Upload the file
     try {
-      await startUpload([file]);
+      // First upload the file without using toast.promise
+      const uploadPromise = startUpload([file]);
+
+      // Show loading toast manually
+      const uploadLoadingToast = toast.loading("🔄 Uploading PDF...");
+
+      // Wait for upload to complete
+      const uploadResult = (await uploadPromise) as unknown as UploadResponse[];
+
+      // Dismiss loading toast and show success
+      toast.dismiss(uploadLoadingToast);
+      toast.success("📄 PDF Uploaded Successfully!");
+
+      if (
+        !uploadResult ||
+        !Array.isArray(uploadResult) ||
+        uploadResult.length === 0
+      ) {
+        toast.error("❌ Something went wrong with the upload");
+        setIsUploading(false);
+        return;
+      }
+
+      // Show loading toast for summary generation
+      const summaryLoadingToast = toast.loading("🤖 Generating Summary...");
+
+      // Generate summary
+      const summaryResponse = (await generatePdfSummary(
+        uploadResult
+      )) as unknown as SummaryResponse;
+      setSummaryResult(JSON.stringify(summaryResponse));
+
+      // Dismiss loading toast
+      toast.dismiss(summaryLoadingToast);
+
+      if (!summaryResponse.success || !summaryResponse.data) {
+        toast.error(
+          `❌ ${summaryResponse.message || "Failed to generate summary"}`
+        );
+        setIsUploading(false);
+        return;
+      }
+
+      // Show success toast
+      toast.success("✅ Summary Generated!");
+
+      // Extract summary text properly
+      const summaryData = summaryResponse.data;
+      let summaryText = "";
+
+      if (typeof summaryData.summary === "string") {
+        summaryText = summaryData.summary;
+      } else if (
+        typeof summaryData.summary === "object" &&
+        summaryData.summary !== null
+      ) {
+        if (
+          "summary" in summaryData.summary &&
+          typeof summaryData.summary.summary === "string"
+        ) {
+          summaryText = summaryData.summary.summary;
+        } else if (
+          "text" in summaryData.summary &&
+          typeof summaryData.summary.text === "string"
+        ) {
+          summaryText = summaryData.summary.text;
+        } else {
+          summaryText = JSON.stringify(summaryData.summary);
+        }
+      }
+
+      // Show loading toast for saving
+      const savingLoadingToast = toast.loading("💾 Saving Summary...");
+
+      // Store the summary
+      const saveResult = await storePdfSummaryAction({
+        summary: summaryText,
+        fileUrl: uploadResult[0].serverData.file.ufsUrl,
+        title: summaryData.title || formatFileNameAsTitle(summaryData.name),
+        fileName: summaryData.name,
+      });
+
+      // Dismiss loading toast
+      toast.dismiss(savingLoadingToast);
+
+      if (saveResult.success) {
+        toast.success("🎉 PDF Summary Saved Successfully!");
+
+        // Check if we have the ID in the response before redirecting
+        if (saveResult.data && saveResult.data.id) {
+          // Reset form
+          formRef.current?.reset();
+
+          // Redirect to the summary page
+          router.push(`/summary/${saveResult.data.id}`);
+        } else {
+          toast.error("⚠️ Summary saved but redirect failed: Missing ID");
+        }
+      } else {
+        toast.error(`❌ ${saveResult.message || "Failed to save summary"}`);
+      }
     } catch (error) {
-      console.error("Upload failed:", error);
-      toast.error("Upload failed. Please try again.");
+      toast.error(
+        `❌ ${
+          error instanceof Error
+            ? error.message
+            : "An unexpected error occurred"
+        }`
+      );
+    } finally {
       setIsUploading(false);
     }
   };
@@ -110,12 +185,12 @@ const UploadForm = () => {
         isUploading={isUploading}
       />
 
-      {extractedText && (
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <h3 className="text-lg font-semibold mb-4">Extracted PDF Content</h3>
-          <div className="max-h-96 overflow-y-auto border border-gray-200 rounded p-4 text-sm">
-            {extractedText}
-          </div>
+      {summaryResult && (
+        <div className="p-4 bg-gray-50 rounded-lg">
+          <h3 className="font-medium mb-2">Summary Result:</h3>
+          <pre className="whitespace-pre-wrap text-sm">
+            {JSON.stringify(JSON.parse(summaryResult), null, 2)}
+          </pre>
         </div>
       )}
     </div>
