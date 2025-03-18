@@ -135,7 +135,7 @@ async function storePdfSummary({
       ) RETURNING id;
     `;
 
-    return result.length > 0 ? { id: result[0].id } : null;
+    return result.length > 0;
   } catch (error) {
     console.error("Error saving PDF summary:", error);
     const errorMessage = (error as Error).message || "Unknown error";
@@ -174,16 +174,18 @@ export async function storePdfSummaryAction({
       };
     }
 
-    // Revalidate the cache for the new summary
-    revalidatePath(`/summary/${savedSummary.id}`);
-
     return {
       success: true,
       message: "PDF summary saved successfully",
       data: {
-        id: savedSummary.id,
+        savedSummary,
+        title,
       },
     };
+
+    // // Revalidated our cache
+    // revalidatePath(`/api/summary/${savedSummary.id}`);
+    
   } catch (error) {
     console.error("Error in storePdfSummaryAction:", error);
     return {

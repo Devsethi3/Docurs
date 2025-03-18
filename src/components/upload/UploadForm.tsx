@@ -13,6 +13,7 @@ import { formatFileNameAsTitle } from "@/lib/utils";
 import { SummaryResponse, UploadResponse } from "@/types/upload";
 import { useRouter } from "next/navigation";
 
+
 const pdfSchema = z.object({
   file: z
     .instanceof(File, { message: "Invalid File" })
@@ -150,20 +151,13 @@ const UploadForm = () => {
 
       if (saveResult.success) {
         toast.success("🎉 PDF Summary Saved Successfully!");
-
-        // Check if we have the ID in the response before redirecting
-        if (saveResult.data && saveResult.data.id) {
-          // Reset form
-          formRef.current?.reset();
-
-          // Redirect to the summary page
-          router.push(`/summary/${saveResult.data.id}`);
-        } else {
-          toast.error("⚠️ Summary saved but redirect failed: Missing ID");
-        }
       } else {
         toast.error(`❌ ${saveResult.message || "Failed to save summary"}`);
       }
+
+      formRef.current?.reset();
+      // Todo: Redirect to the [id] summary page
+
     } catch (error) {
       toast.error(
         `❌ ${
