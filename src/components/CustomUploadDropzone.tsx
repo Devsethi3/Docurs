@@ -1,4 +1,4 @@
-// components/custom-upload-dropzone.tsx
+// components/custom-upload-dropzone
 "use client";
 
 import { useCallback, useState } from "react";
