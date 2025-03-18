@@ -1,4 +1,4 @@
-// components/custom-upload-dropzone
+// components/custom-upload
 "use client";
 
 import { useCallback, useState } from "react";
