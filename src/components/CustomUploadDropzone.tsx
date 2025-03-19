@@ -1,4 +1,4 @@
-// components
+// component
 "use client";
 
 import { useCallback, useState } from "react";
