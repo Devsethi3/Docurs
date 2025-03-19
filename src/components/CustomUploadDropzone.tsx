@@ -1,4 +1,4 @@
-// compo
+// comp
 "use client";
 
 import { useCallback, useState } from "react";
