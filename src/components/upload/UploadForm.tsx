@@ -31,7 +31,7 @@ const UploadForm = () => {
 
   const { startUpload } = useUploadThing("pdfUploader", {
     onClientUploadComplete: () => {
-      // We'll handle success in promise chain instead 
+      // We'll handle success in promise chain 
       setIsUploading(false);
     },
     onUploadError: (error) => {
