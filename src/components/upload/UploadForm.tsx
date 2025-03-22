@@ -30,8 +30,7 @@ const UploadForm = () => {
   const [summaryResult, setSummaryResult] = useState<string | null>(null);
 
   const { startUpload } = useUploadThing("pdfUploader", {
-    onClientUploadComplete: () => {
-      // 
+    onClientUploadComplete: () => 
       setIsUploading(false);
     },
     onUploadError: (error) => {
