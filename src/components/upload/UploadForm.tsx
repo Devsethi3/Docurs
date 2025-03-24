@@ -63,7 +63,7 @@ const UploadForm = () => {
     }
 
     try {
-      // First upload the file without 
+      // First upload the file 
       const uploadPromise = startUpload([file]);
 
       // Show loading toast manually
