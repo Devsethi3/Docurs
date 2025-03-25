@@ -66,7 +66,7 @@ const UploadForm = () => {
       
       const uploadPromise = startUpload([file]);
 
-      // Show loading toast 
+      // Show loading 
       const uploadLoadingToast = toast.loading("🔄 Uploading PDF...");
 
       // Wait for upload to complete
