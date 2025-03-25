@@ -63,7 +63,7 @@ const UploadForm = () => {
     }
 
     try {
-      // 
+      
       const uploadPromise = startUpload([file]);
 
       // Show loading toast manually
