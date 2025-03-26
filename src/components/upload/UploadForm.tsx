@@ -69,7 +69,7 @@ const UploadForm = () => {
      
       const uploadLoadingToast = toast.loading("🔄 Uploading PDF...");
 
-      // Wait for upload to complete
+      // Wait for upload to comple
       const uploadResult = (await uploadPromise) as unknown as UploadResponse[];
 
       // Dismiss loading toast and show success
