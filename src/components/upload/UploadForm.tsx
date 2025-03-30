@@ -71,7 +71,7 @@ const UploadForm = () => {
 
       const uploadResult = (await uploadPromise) as unknown as UploadResponse[];
 
-      // Dismiss lo
+      // Dismis
       toast.dismiss(uploadLoadingToast);
       toast.success("📄 PDF Uploaded Successfully!");
 
