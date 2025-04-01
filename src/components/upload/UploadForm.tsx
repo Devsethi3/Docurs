@@ -84,7 +84,7 @@ const UploadForm = () => {
         return;
       }
 
-      // Show loading toast for s
+      // Show loading toast for
       const summaryLoadingToast = toast.loading("🤖 Generating Summary...");
 
       // Generate summary
