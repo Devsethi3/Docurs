@@ -84,7 +84,6 @@ const UploadForm = () => {
         return;
       }
 
-      // 
       const summaryLoadingToast = toast.loading("🤖 Generating Summary...");
 
       // Generate summa
