@@ -86,7 +86,7 @@ const UploadForm = () => {
 
       const summaryLoadingToast = toast.loading("🤖 Generating Summary...");
 
-      // Generate summa
+      // Generate sum
       const summaryResponse = (await generatePdfSummary(
         uploadResult
       )) as unknown as SummaryResponse;
