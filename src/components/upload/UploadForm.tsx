@@ -86,7 +86,7 @@ const UploadForm = () => {
 
       const summaryLoadingToast = toast.loading("🤖 Generating Summary...");
 
-      // Gene
+      // Ge
       const summaryResponse = (await generatePdfSummary(
         uploadResult
       )) as unknown as SummaryResponse;
