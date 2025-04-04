@@ -92,7 +92,7 @@ const UploadForm = () => {
       )) as unknown as SummaryResponse;
       setSummaryResult(JSON.stringify(summaryResponse));
 
-      // Dismiss loading toa
+      // Dismiss loading t
       toast.dismiss(summaryLoadingToast);
 
       if (!summaryResponse.success || !summaryResponse.data) {
