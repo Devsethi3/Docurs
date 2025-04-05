@@ -103,7 +103,7 @@ const UploadForm = () => {
         return;
       }
 
-      // Show success toa
+      // Show success t
       toast.success("✅ Summary Generated!");
 
       // Extract summary text properly
