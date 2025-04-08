@@ -104,7 +104,7 @@ const UploadForm = () => {
 
       toast.success("✅ Summary Generated!");
 
-      // Extract summary text
+      // Extract summary te
       const summaryData = summaryResponse.data;
       let summaryText = "";
 
