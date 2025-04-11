@@ -128,7 +128,6 @@ const UploadForm = () => {
         }
       }
 
-      // 
       const savingLoadingToast = toast.loading("💾 Saving Summary...");
 
       // Store the summary
