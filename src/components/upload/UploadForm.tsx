@@ -138,7 +138,7 @@ const UploadForm = () => {
         fileName: summaryData.name,
       });
 
-      // Dismiss loading toa
+      // Dismiss loading
       toast.dismiss(savingLoadingToast);
 
       if (saveResult.success) {
