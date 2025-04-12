@@ -130,7 +130,7 @@ const UploadForm = () => {
 
       const savingLoadingToast = toast.loading("💾 Saving Summary...");
 
-      // Store the sum
+      // Store the 
       const saveResult = await storePdfSummaryAction({
         summary: summaryText,
         fileUrl: uploadResult[0].serverData.file.ufsUrl,
