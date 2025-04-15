@@ -146,7 +146,7 @@ const UploadForm = () => {
       }
 
       formRef.current?.reset();
-      // Todo: Redirect to the [id] summ
+      // Todo: Redirect to the [id] su
 
     } catch (error) {
       toast.error(
