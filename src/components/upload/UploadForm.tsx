@@ -146,7 +146,7 @@ const UploadForm = () => {
       }
 
       formRef.current?.reset();
-      // Todo: Redir
+      // Todo: Red
 
     } catch (error) {
       toast.error(
