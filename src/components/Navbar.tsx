@@ -95,7 +95,6 @@ const Navbar = () => {
           </button>
         </div>
 
-        {/* */}
         {isMobileMenuOpen && (
           <motion.div
             className="absolute top-full left-0 right-0 bg-background shadow-lg py-4 px-4 md:hidden"
