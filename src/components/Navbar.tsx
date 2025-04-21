@@ -45,7 +45,7 @@ const Navbar = () => {
           <span className="text-primary font-bold text-2xl">AI.Saas</span>
         </motion.div>
 
-        {/* De*/}
+        {/* D */}
         <div className="hidden md:flex space-x-8">
           {["Home", "Features", "Pricing", "Testimonials", "Contact"].map(
             (item, index) => (
