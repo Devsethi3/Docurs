@@ -119,7 +119,7 @@ const Navbar = () => {
           </motion.div>
         )}
 
-        {/* CTA Bu */}
+        {/* CTA B */}
         <motion.div
           className="hidden md:block"
           initial={{ opacity: 0 }}
