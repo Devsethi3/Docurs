@@ -119,7 +119,7 @@ const Navbar = () => {
           </motion.div>
         )}
 
-        {/* C */}
+        {/* */}
         <motion.div
           className="hidden md:block"
           initial={{ opacity: 0 }}
