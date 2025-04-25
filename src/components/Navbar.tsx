@@ -62,7 +62,7 @@ const Navbar = () => {
           )}
         </div>
 
-        {/* Mob */}
+        {/* Mo */}
         <div className="md:hidden">
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
