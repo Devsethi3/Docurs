@@ -143,7 +143,7 @@ const Navbar = () => {
               </Link>
             </>
           )}
-          {/* <button className="bg-primary hover:bg">
+          {/* <button className="bg-primary hover:b">
             
           </button> */}
         </motion.div>
