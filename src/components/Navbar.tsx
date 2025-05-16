@@ -143,7 +143,7 @@ const Navbar = () => {
               </Link>
             </>
           )}
-          {/* <button classN>
+          {/* <button class>
             
           </button> */}
         </motion.div>
