@@ -145,7 +145,7 @@ const Navbar = () => {
           )}
           {/*
             
-          </bu */}
+          </b */}
         </motion.div>
       </div>
     </motion.nav>
