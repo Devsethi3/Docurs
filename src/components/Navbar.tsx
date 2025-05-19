@@ -145,7 +145,7 @@ const Navbar = () => {
           )}
           {/*
             
-          </butt */}
+          </but */}
         </motion.div>
       </div>
     </motion.nav>
