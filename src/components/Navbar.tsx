@@ -129,7 +129,7 @@ const Navbar = () => {
               <UserButton
               appearance={{
                 elements: {
-                  // userButtonAvatarBox: "w-14",
+                  // userButtonAvatarBox: "w-1",
                   userButtonPopoverFooter: "hidden",
                 },
               }}
